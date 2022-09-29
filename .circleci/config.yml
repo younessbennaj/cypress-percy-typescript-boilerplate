@@ -3,6 +3,15 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@2.0.0
 
+executors:
+  ci-node:
+    docker:
+      - image: cimg/node:16.14.0
+    resource_class: large
+    working_directory: /mnt/ramdisk
+    environment:
+      CYPRESS_INSTALL_BINARY: 0
+
 jobs:
   cache-dependencies:
     parameters:
