@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   cypress: cypress-io/cypress@2.0.0
+  percy: percy/agent@0.1.3
 
 executors:
   ci-node:
@@ -42,6 +43,7 @@ workflows:
       - cache-dependencies:
           key: v8-dependencies-cache-{{ checksum "yarn.lock" }}
       - cypress/run:
+          command-prefix: npx percy exec --
           executor: ci-cypress
           browser: chrome
           yarn: true
