@@ -26,5 +26,5 @@ workflows:
   commit-workflow:
     jobs:
       - cache-dependencies:
-        key: v8-dependencies-cache-{{ checksum "yarn.lock" }}
+          key: v8-dependencies-cache-{{ checksum "yarn.lock" }}
       - cypress/run
