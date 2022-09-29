@@ -3,7 +3,28 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@2.0.0
 
+jobs:
+  cache-dependencies:
+    parameters:
+      key:
+        type: string
+    executor: ci-node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - << parameters.key >>
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: << parameters.key >>
+
 workflows:
   commit-workflow:
     jobs:
+      - cache-dependencies:
+        key: v8-dependencies-cache-{{ checksum "yarn.lock" }}
       - cypress/run
