@@ -1,0 +1,9 @@
+version: 2.1
+
+orbs:
+  cypress: cypress-io/cypress@2.0.0
+
+workflows:
+  commit-workflow:
+    jobs:
+      - cypress/run
