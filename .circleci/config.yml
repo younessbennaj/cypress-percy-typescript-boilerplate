@@ -11,6 +11,11 @@ executors:
     working_directory: /mnt/ramdisk
     environment:
       CYPRESS_INSTALL_BINARY: 0
+  ci-cypress:
+    docker:
+      - image: 'cypress/included:10.8.0'
+    resource_class: large
+    working_directory: /mnt/ramdisk
 
 jobs:
   cache-dependencies:
@@ -36,4 +41,10 @@ workflows:
     jobs:
       - cache-dependencies:
           key: v8-dependencies-cache-{{ checksum "yarn.lock" }}
-      - cypress/run
+      - cypress/run:
+          executor: ci-cypress
+          browser: chrome
+          yarn: true
+          start: yarn start
+          wait-on: 'http://localhost:3000'
+          no-workspace: true
