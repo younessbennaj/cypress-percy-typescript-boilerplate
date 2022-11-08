@@ -44,7 +44,7 @@ jobs:
       - restore_cache:
           name: Restore dependencies cache
           keys:
-            - v8-dependencies-cache-{{ checksum "yarn.lock" }}
+            - v9-dependencies-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Run Cypress
           command: npx concurrently -k -s "command-cypress" -n "app,cypress" "yarn start" "npx wait-on http://localhost:3000 && yarn cypress:run --spec 'cypress/e2e/my-app.cy.ts'"
@@ -53,7 +53,7 @@ workflows:
   commit-workflow:
     jobs:
       - cache-dependencies:
-          key: v8-dependencies-cache-{{ checksum "yarn.lock" }}
+          key: v9-dependencies-cache-{{ checksum "yarn.lock" }}
       - test-e2e:
           requires:
             - cache-dependencies
