@@ -76,6 +76,8 @@ workflows:
     when:
       or: [<< pipeline.parameters.run-test-visual >>]
     jobs:
+      - cache-dependencies:
+          key: v9-dependencies-cache-{{ checksum "yarn.lock" }}
       - test-visual:
           requires:
             - cache-dependencies
