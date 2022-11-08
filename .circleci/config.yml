@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  run-test-visual:
+    type: boolean
+    default: false
+
 orbs:
   percy: percy/agent@0.1.3
 
@@ -48,7 +53,17 @@ jobs:
       - run:
           name: Run Cypress
           command: npx concurrently -k -s "command-cypress" -n "app,cypress" "yarn start" "npx wait-on http://localhost:3000 && yarn cypress:run --spec 'cypress/e2e/my-app.cy.ts'"
-
+  test-visual:
+    executor: ci-cypress
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore dependencies cache
+          keys:
+            - v9-dependencies-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run Cypress
+          command: npx concurrently -k -s "command-cypress" -n "app,cypress" "yarn start" "npx wait-on http://localhost:3000 && npx percy exec -- cypress run --spec 'cypress/e2e/visual-tests.cy.ts'"
 workflows:
   commit-workflow:
     jobs:
@@ -57,3 +72,9 @@ workflows:
       - test-e2e:
           requires:
             - cache-dependencies
+      - test-visual:
+          requires:
+            - cache-dependencies
+          when:
+            or: [<< pipeline.parameters.run-test-visual >>]
+
