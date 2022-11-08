@@ -45,6 +45,10 @@ jobs:
           name: Restore dependencies cache
           keys:
             - v8-dependencies-cache-{{ checksum "yarn.lock" }}
+      - install:
+        - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile
       - run:
           name: Run Cypress
           command: npx concurrently -k -s "command-cypress" -n "app,cypress" "yarn start" "npx wait-on http://localhost:3000 && yarn cypress:run --spec 'cypress/e2e/my-app.cy.ts'"
