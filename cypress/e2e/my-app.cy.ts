@@ -1,7 +1,7 @@
 describe('myApp', () => {
-  it('should visit homepage', () => {
+  it('should display homepage header', () => {
     cy.visit('http://localhost:3000/')
 
-    cy.percySnapshot('Homepage test');
+    cy.get('h1').contains('Learn React')
   })
 })
