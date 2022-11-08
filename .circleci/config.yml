@@ -72,9 +72,12 @@ workflows:
       - test-e2e:
           requires:
             - cache-dependencies
+  mananual-commit-workflow:
+    when:
+      or: [<< pipeline.parameters.run-test-visual >>]
+    jobs:
       - test-visual:
           requires:
             - cache-dependencies
-          when:
-            or: [<< pipeline.parameters.run-test-visual >>]
+
 
