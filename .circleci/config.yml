@@ -23,6 +23,8 @@ jobs:
       key:
         type: string
     executor: ci-node
+    environment:
+      CYPRESS_INSTALL_BINARY: 0
     steps:
       - checkout
       - restore_cache:
