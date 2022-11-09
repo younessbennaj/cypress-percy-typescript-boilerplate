@@ -66,6 +66,8 @@ jobs:
           command: npx concurrently -k -s "command-cypress" -n "app,cypress" "yarn start" "npx wait-on http://localhost:3000 && npx percy exec -- cypress run --spec 'cypress/e2e/visual-tests.cy.ts'"
 workflows:
   commit-workflow:
+    when:
+      not: << pipeline.parameters.run-test-visual >>
     jobs:
       - cache-dependencies:
           key: v9-dependencies-cache-{{ checksum "yarn.lock" }}
